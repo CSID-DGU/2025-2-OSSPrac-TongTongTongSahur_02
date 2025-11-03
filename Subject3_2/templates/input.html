@@ -1,1 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프로필 정보 입력</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
 
+    <header>
+        <nav>
+            <a href="/Subject3_1/templates/index.html">Home</a>
+            <a href="#">Contact</a>
+            <a href="https://github.com/CSID-DGU/2025-2-OSSPrac-TongTongTongSahur_02">Github</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>나의 프로필 정보 입력</h1>
+            <p>팀 페이지에 표시될 정보를 입력하고 아바타를 설정해 주세요.</p>
+
+            <form class="profile-form" method="POST" action="/">
+                <h2>개인 정보 입력</h2>
+
+                <div class="form-grid">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="major">Major</label>
+                            <input type="text" id="major" name="major">
+                        </div>
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="male" name="gender" value="male" checked>
+                                    <label for="male">Male</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="female" name="gender" value="female">
+                                    <label for="female">Female</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email">
+                        </div>
+                    </div>
+
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="student-id">Student ID</label>
+                            <input type="text" id="student-id" name="student_id">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label>Role</label>
+                            <div class="radio-group">
+                                <div class="radio-option">
+                                    <input type="radio" id="leader" name="role" value="leader" checked>
+                                    <label for="leader">Leader</label>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" id="member" name="role" value="member">
+                                    <label for="member">Member</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="about-me">About Me</label>
+                            <input type="text" id="about-me" name="about_me">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group avatar-section">
+                    <label>Profile Image</label>
+                    <div class="avatar-selector">
+                        
+                        <div class="avatar-option">
+                            <input type="radio" id="avatar1" name="avatar" value="avatar1" checked>
+                            <label for="avatar1">
+                                <img src="{{ url_for('static', filename='images/avatar_minjeong.jpg') }}" alt="Avatar 1">
+                            </label>
+                        </div>
+                        <div class="avatar-option">
+                            <input type="radio" id="avatar2" name="avatar" value="avatar2">
+                            <label for="avatar2">
+                                <img src="{{ url_for('static', filename='images/avatar_yeonsik.png') }}" alt="Avatar 2">
+                            </label>
+                        </div>
+                        <div class="avatar-option">
+                            <input type="radio" id="avatar3" name="avatar" value="avatar3">
+                            <label for="avatar3">
+                                <img src="{{ url_for('static', filename='images/avatar_eunchae.png') }}" alt="Avatar 3">
+                            </label>
+                        </div>
+                        <div class="avatar-option">
+                            <input type="radio" id="avatar4" name="avatar" value="avatar4">
+                            <label for="avatar4">
+                                <img src="{{ url_for('static', filename='images/avatar_sehee.png') }}" alt="Avatar 4">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-add">Add</button>
+                    <button type="submit" class="btn btn-complete">Complete</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+</body>
+</html>
