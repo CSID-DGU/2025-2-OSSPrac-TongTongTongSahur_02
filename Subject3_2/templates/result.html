@@ -1,1 +1,175 @@
+<!-- templates/result.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About Me</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .page { max-width: 1200px; margin: 36px auto 80px; padding: 0 24px; }
+    .profile-grid { display:grid; grid-template-columns: 1.2fr .9fr; gap:28px; }
+    @media (max-width: 980px){ .profile-grid{ grid-template-columns:1fr; } }
 
+    .hello-title { font-size: 56px; line-height:1.05; margin: 0 0 6px; }
+    .hello-sub   { font-size: 44px; font-weight: 800; color: #a78bfa; margin: 0 0 24px; }
+
+    .card-dark { background:#18181c; border:1px solid #2a2a31; border-radius:22px; padding:24px; }
+    .btn { background:#1f1f27; border:1px solid #30303a; color:#e9eaee; border-radius:12px; padding:12px 16px; font-weight:800; text-decoration:none; }
+    .btn.primary { background:#7b3ef0; border-color:#6d28d9; color:#fff; }
+    .btns { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:22px; }
+
+    .intro { display:flex; gap:20px; align-items:flex-start; }
+    .avatar-wrap {
+      width: 180px; height: 180px; border-radius: 28px; padding: 14px;
+      background: radial-gradient(120px 120px at 30% 30%, #7b3ef0 0%, #4c2ca8 45%, transparent 60%),
+                  radial-gradient(100px 100px at 80% 70%, #2f53ff55 0%, transparent 60%),
+                  #0f0f12;
+      border:1px solid #2c2c35; display:flex; align-items:center; justify-content:center;
+    }
+    .avatar-wrap img{ width: 140px; height: 140px; object-fit: contain; display:block; }
+
+    .kv { margin: 8px 0; }
+    .kv span { color:#b7b9c3; margin-right: 8px; }
+
+    /* Chat panel */
+    .chat { background:#18181c; border:1px solid #2a2a31; border-radius:22px; padding:18px; display:flex; flex-direction:column; min-height: 460px; }
+    .chat h3 { margin:2px 0 4px; font-size:28px; }
+    .chat small { color:#b7b9c3; }
+    .log { flex:1; overflow:auto; padding:8px 4px 12px; margin-top:8px; }
+    .bubble { max-width: 90%; display:inline-block; padding:10px 12px; border-radius:14px; margin:6px 0; word-wrap:break-word; white-space:pre-wrap; }
+    .me     { align-self:flex-end; background:#7b3ef0; color:#fff; border-top-right-radius:8px; }
+    .sys    { align-self:flex-start; background:#1f1f27; border:1px solid #2c2c35; color:#e9eaee; border-top-left-radius:8px; }
+    .meta { font-size:12px; color:#b7b9c3; margin:2px 4px 0; text-align:right; }
+    .writer { display:flex; gap:10px; margin-top:10px; }
+    .writer textarea{ flex:1; background:#101015; border:1px solid #2a2a31; color:#e9eaee; border-radius:12px; padding:10px 12px; min-height:44px; resize:vertical }
+  </style>
+</head>
+<body>
+  <!-- 상단바 -->
+  <header class="topbar">
+    <div class="topbar__inner" style="justify-content:space-between">
+      <div style="font-weight:900">TongTongTong Sahur</div>
+      <nav class="topbar__nav">
+        <a href="{{ url_for('team_page') }}">Back</a>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="https://github.com/" target="_blank">Github</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="profile-grid">
+      <!-- Left: 프로필 -->
+      <section>
+        <div class="intro">
+          <div class="avatar-wrap">
+            <img src="{{ member.avatar_url or url_for('static', filename='avatars/member1.png') }}" alt="avatar">
+          </div>
+          <div>
+            <div class="hello-title">Hello!</div>
+            <div class="hello-sub">I am {{ member.name }}</div>
+
+            {% set _email = member.email or '' %}
+            {% set _parts = _email.split('@') if '@' in _email else [_email, ''] %}
+            {% set masked_email = (_parts[0][:1] ~ '***@' ~ _parts[1]) if _email else '' %}
+            {% set _phone = (member.phone or '')|replace('-', '')|replace(' ', '') %}
+            {% set masked_phone = (_phone[:3] ~ '-****-' ~ _phone[-4:]) if _phone|length >= 7 else member.phone %}
+
+            <div class="kv"><span>Student ID:</span> <strong>{{ member.student_id }}</strong></div>
+            <div class="kv"><span>Gender:</span> <strong>{{ member.gender or '-' }}</strong></div>
+            <div class="kv"><span>Major:</span> <strong>{{ member.major or '-' }}</strong></div>
+            <div class="kv">✉️ <span>{{ masked_email }}</span></div>
+            <div class="kv">📞 <span>{{ masked_phone }}</span></div>
+          </div>
+        </div>
+
+        <div class="card-dark" style="margin-top:18px">
+          <div style="color:#b7b9c3;margin-bottom:6px">About Me</div>
+          <div>{{ member.about }}</div>
+        </div>
+
+        <div class="btns">
+          <a class="btn primary" href="{{ url_for('team_page') }}">팀 전체 보기</a>
+          <a class="btn" href="{{ url_for('input_page') }}">추가로 입력하기</a>
+          <a class="btn" href="{{ url_for('index') }}">홈으로</a>
+        </div>
+      </section>
+
+      <!-- Right: Chat -->
+      <aside class="chat">
+        <h3>Chat</h3>
+        <small>하고 싶은 말을 자유롭게 남겨보세요.</small>
+        <div id="log" class="log"></div>
+        <div class="writer">
+          <textarea id="msg" placeholder="메시지를 입력하세요."></textarea>
+          <button id="send" class="btn primary">보내기</button>
+          <button id="clear" class="btn" title="대화 지우기">지우기</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    // ===== Chat (localStorage by student_id) =====
+    const sid = {{ (member.student_id or '0')|tojson }};
+    const KEY = `chat_${sid}`;
+
+    const logEl = document.getElementById('log');
+    const msgEl = document.getElementById('msg');
+    const sendBtn = document.getElementById('send');
+    const clearBtn = document.getElementById('clear');
+
+    function nowStr(){
+      const d = new Date();
+      const z = n => String(n).padStart(2,'0');
+      return `${z(d.getHours())}:${z(d.getMinutes())}`;
+    }
+    function escapeHtml(s){
+      return s.replace(/[&<>\"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+    }
+    function load(){ try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; } }
+    function save(arr){ localStorage.setItem(KEY, JSON.stringify(arr)); }
+    function render(){
+      const arr = load();
+      logEl.innerHTML = '';
+      arr.forEach(m=>{
+        const wrap = document.createElement('div');
+        wrap.style.display = 'flex';
+        wrap.style.flexDirection = 'column';
+        wrap.appendChild(Object.assign(document.createElement('div'), {
+          className: `bubble ${m.role || 'me'}`,
+          innerHTML: escapeHtml(m.text)
+        }));
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        meta.textContent = m.time || '';
+        wrap.appendChild(meta);
+        logEl.appendChild(wrap);
+      });
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+    function send(){
+      const text = msgEl.value.trim();
+      if(!text) return;
+      const arr = load();
+      arr.push({ role:'me', text, time: nowStr() });
+      save(arr);
+      msgEl.value = '';
+      render();
+    }
+    sendBtn.addEventListener('click', send);
+    msgEl.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' && !e.shiftKey){
+        e.preventDefault();
+        send();
+      }
+    });
+    clearBtn.addEventListener('click', ()=>{
+      if(confirm('이 채팅을 모두 지울까요?')){ localStorage.removeItem(KEY); render(); }
+    });
+    render();
+  </script>
+</body>
+</html>
