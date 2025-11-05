@@ -1,1 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TongTongTong Sahur</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .hero{max-width:1000px;margin:70px auto 40px;padding:0 20px;text-align:center}
+    .hero h1{font-size:56px;margin:0 0 8px}
+    .hero p{color:#b7b9c3;margin:0 0 24px}
+    .hero figure{margin:28px auto 24px;max-width:780px;border-radius:22px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+    .actions{display:flex;gap:12px;justify-content:center;margin-top:8px}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__inner" style="justify-content:flex-end">
+      <nav class="topbar__nav">
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="https://github.com/" target="_blank">Github</a>
+      </nav>
+    </div>
+  </header>
 
+  <main class="hero">
+    <h1>TongTongTong Sahur</h1>
+    <p>Innovate, Collaborate, Create</p>
+    <figure>
+      <img src="{{ url_for('static', filename='avatars/leader.png') }}" alt="" style="width:100%;display:block;background:#0e0f12">
+    </figure>
+    <div class="actions">
+      <a class="btn primary" href="{{ url_for('input_page') }}">팀 구성원 정보 입력</a>
+      <a class="btn" href="{{ url_for('team_page') }}">팀 전체 보기</a>
+    </div>
+    <p class="muted" style="margin-top:28px">@ 2025 TONGTONGTONG SAHUR. All rights reserved</p>
+  </main>
+</body>
+</html>

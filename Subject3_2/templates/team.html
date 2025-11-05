@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Team | TongTongTong Sahur</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .page-title{font-size:40px; line-height:1.1; margin:0 0 4px; text-align:center}
+    .subtitle{color:#a7a8ad; text-align:center; margin:0}
+
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+    @media (max-width:1100px){ .grid{grid-template-columns:repeat(2,1fr);} }
+    @media (max-width:640px){ .grid{grid-template-columns:1fr;} }
+
+    .card{
+      background:#0e0f12; border:2px solid #7b3ef0; border-radius:16px;
+      padding:16px; display:flex; flex-direction:column; gap:12px;
+      text-decoration:none; /* 링크 밑줄 제거(안전) */
+      /* ✨ 애니메이션 핵심 */
+      transform:translateY(0) scale(1);
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        border-color .18s ease,
+        background-color .18s ease;
+      will-change: transform;
+    }
+    .card:hover{
+      transform:translateY(-4px) scale(1.02);
+      box-shadow:0 12px 22px rgba(0,0,0,.35), 0 2px 10px rgba(123,62,240,.2);
+      border-color:#9b7cff;
+      background:#111216;
+    }
+    .card:active{ transform:translateY(-1px) scale(0.995); }
+    .card:focus-visible{
+      outline:2px solid #9b7cff; outline-offset:2px; border-color:#b6a0ff;
+    }
+
+    /* 이미지도 살짝 부드럽게 */
+    .card img{
+      width:100%; aspect-ratio:1/1; object-fit:contain; background:#0d0d11; border-radius:12px;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .card:hover img{ transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,.25); }
+
+    .title{font-size:22px;margin:8px 0 0}
+    .role{color:#a78bfa;font-weight:800}
+    .desc{color:#b7b9c3}
+
+    /* 모션 선호도: 줄이기 */
+    @media (prefers-reduced-motion: reduce){
+      .card, .card img{ transition:none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <nav class="topbar__nav">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="https://github.com/" target="_blank" rel="noopener">Github</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="margin-top:40px">
+    <h1 class="page-title">우리 팀을 소개합니다.</h1>
+    <p class="subtitle">TongTongTong Sahur</p>
+
+    <div class="grid" style="margin-top:24px">
+      {% for m in team %}
+      <a class="card" href="{{ url_for('member_detail', student_id=m.student_id) }}">
+        <div class="role">{{ m.role }}</div>
+        <img src="{{ m.avatar_url }}" alt="">
+        <div class="title">{{ m.name }}</div>
+        <div class="desc">{{ m.about or '소개 글이 아직 없습니다.' }}</div>
+      </a>
+      {% endfor %}
+    </div>
+  </main>
+</body>
+</html>
