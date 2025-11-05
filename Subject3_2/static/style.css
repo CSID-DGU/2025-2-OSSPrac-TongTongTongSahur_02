@@ -1,0 +1,88 @@
+/* ==============================
+   🌙 기본 테마 & 전역 스타일
+============================== */
+:root {
+  --bg: #0e0f12;
+  --primary: #5b23d8;
+  --accent: #7b3ef0;
+  --text: #e9eaee;
+}
+
+* { box-sizing: border-box; }
+
+html, body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Noto Sans KR","Pretendard",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+}
+
+/* 링크 */
+a{ color:inherit; text-decoration:none; transition:.2s; }
+
+/* ==============================
+   🔝 상단바 (모든 페이지 공통)
+============================== */
+.topbar{
+  width:100%;
+  background:linear-gradient(90deg,var(--primary),var(--accent));
+  color:#fff;
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+  position:sticky; top:0; z-index:999; /* 항상 맨 위 */
+}
+
+/* 오른쪽 정렬 고정 */
+.topbar__inner{
+  height:64px;
+  display:flex; align-items:center; justify-content:flex-end; /* ← 오른쪽 정렬 */
+  padding:0 20px;
+}
+
+/* 브랜드(좌측 텍스트) 사용 안 함: 있더라도 숨김 */
+.topbar__brand{ display:none; }
+
+/* 메뉴 */
+.topbar__nav{ display:flex; align-items:center; gap:24px; }
+.topbar__nav a{
+  color:#fff; font-weight:700; opacity:.9; position:relative;
+}
+.topbar__nav a:hover{ opacity:1; transform:translateY(-1px); }
+
+/* 활성 탭(있으면 자동 표시, 없어도 문제 없음) */
+.topbar__nav a.active{ opacity:1; }
+.topbar__nav a.active::after{
+  content:""; position:absolute; left:0; right:0; bottom:-10px; height:3px;
+  background:currentColor; border-radius:3px;
+}
+
+/* Team 메뉴 전역 비노출 (라우트가 /team 인 링크 숨김) */
+.topbar__nav a[href="/team"],
+.topbar__nav a[href$="/team"]{
+  display:none !important;
+}
+
+/* 모바일 대응 */
+@media (max-width:640px){
+  .topbar__inner{
+    height:auto; padding:10px 16px;
+    flex-direction:column; align-items:flex-end; gap:10px; /* 오른쪽 정렬 유지 */
+  }
+  .topbar__nav{ gap:14px; flex-wrap:wrap; justify-content:flex-end; }
+}
+
+/* ==============================
+   📦 기본 컨테이너
+============================== */
+.container{
+  max-width:1100px; margin:80px auto; padding:0 20px; text-align:center;
+}
+
+/* ===== Buttons (공통) ===== */
+.btn{
+  background:#1f1f27; border:1px solid #30303a; color:#e9eaee;
+  border-radius:12px; padding:12px 16px; font-weight:800;
+  text-decoration:none; display:inline-block;
+}
+.btn:hover{ transform:translateY(-1px); }
+.btn.primary{ background:#7b3ef0; border-color:#6d28d9; color:#fff; }
+ 
