@@ -1,4 +1,4 @@
-# ex4.py
+
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from pathlib import Path
 import time, os
@@ -32,7 +32,6 @@ def result():
     }
     return render_template('result.html', result=result_dict, _ver="v-Subject3_1")
 
-# 🔍 내가 어떤 템플릿 폴더/파일을 보고 있는지 즉시 확인
 @app.route('/_where')
 def _where():
     def stat(p):
