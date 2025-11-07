@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>main page: 값을 입력함</title>
+  <style>
+    body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Noto Sans KR',sans-serif}
+    label{margin-right:14px}
+    .row{margin:10px 0}
+  </style>
+</head>
+<body>
+  <!-- v1.1 (Subject3_1) -->
+  <form action="{{ url_for('result') }}" method="POST">
+    <div class="row">
+      <label>Name
+        <input type="text" name="name" required>
+      </label>
+    </div>
+
+    <div class="row">
+      <label>Student Number
+        <input type="text" id="StudentNumber" name="StudentNumber" required>
+      </label>
+    </div>
+
+    <div class="row">
+      <div>Gender</div>
+      <label><input type="radio" name="Gender" value="Male"> Male</label>
+      <label><input type="radio" name="Gender" value="Female" checked> Female</label>
+    </div>
+
+    <div class="row">
+      <label>Major
+        <input type="text" id="Major" name="Major">
+      </label>
+    </div>
+
+    <div class="row">
+      <div>Programming Languages</div>
+      <label><input type="checkbox" name="languages" value="Python" checked> Python</label>
+      <label><input type="checkbox" name="languages" value="Java"> Java</label>
+      <label><input type="checkbox" name="languages" value="HTML"> HTML</label>
+      <label><input type="checkbox" name="languages" value="C++"> C++</label>
+    </div>
+
+    <button type="submit">submit</button>
+  </form>
+</body>
+</html>
