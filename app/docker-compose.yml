@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  web:
+    image: nginx:alpine                # 가벼운 Nginx 웹 서버 이미지
+    container_name: subject3_2-web     # 컨테이너 이름 지정
+    ports:
+      - "8080:80"                      # 내 PC 8080포트 -> 컨테이너 80포트
+    volumes:
+      - ./:/usr/share/nginx/html:ro    # 현재 폴더(Subject3_2)를 Nginx 웹 루트에 마운트
+    restart: unless-stopped            # 내가 중지하기 전까지 자동 재시작
