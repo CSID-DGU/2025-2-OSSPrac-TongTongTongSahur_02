@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TongTongTong Sahur</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .hero{max-width:1000px;margin:70px auto 40px;padding:0 20px;text-align:center}
+    .hero h1{
+      font-size: clamp(40px, 6vw + 8px, 72px); 
+      margin: 0 0 8px;
+      line-height: 1.05;          
+      letter-spacing: -0.02em;   
+      font-weight: 700;          
+    }
+
+    .hero p{color:#b7b9c3;margin:0 0 24px}
+    .actions{
+      display:flex;justify-content:center;
+      margin-top:18px;
+      margin-bottom:40px;
+    }
+    .btn{
+      display:inline-block;padding:14px 22px;border-radius:999px;font-weight:800;
+      text-decoration:none;transition:transform .15s ease, box-shadow .2s ease;
+      background:linear-gradient(90deg, var(--primary), var(--accent));color:#fff;
+      box-shadow:0 8px 28px rgba(0,0,0,.35)
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .topbar__inner{justify-content:flex-end}
+
+
+    .video-section{margin-top:16px;display:flex;justify-content:center}
+    .video-wrap{position:relative;width:min(90vw,800px);max-width:100%}
+    .video-wrap::before{content:"";display:block;padding-top:56.25%} /* 16:9 */
+    .team-video{
+      position:absolute;inset:0;width:100%;height:100%;
+      border:0;border-radius:16px;box-shadow:0 8px 28px rgba(0,0,0,.25);background:#000
+    }
+
+    .footer{margin-top:54px;opacity:.75}
+    @media (prefers-reduced-motion: reduce){ .btn{transition:none} }
+  </style>
+</head>
+<body>
+  <!-- 상단바 -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <nav class="topbar__nav">
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="https://github.com/" target="_blank" rel="noopener">Github</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 메인 -->
+  <main class="hero">
+    <h1>TongTongTong Sahur</h1>
+    <p>Innovate, Collaborate, Create</p>
+
+    <!-- 팀 소개/인트로 동영상 -->
+    <section class="video-section" aria-label="팀 소개 영상">
+      <div class="video-wrap">
+        <video class="team-video"
+               muted playsinline webkit-playsinline loop autoplay
+               controls preload="metadata">
+          <source src="{{ url_for('static', filename='videos/미모티콘_팀_소개_영상_제작.mp4') }}" type="video/mp4">
+          브라우저가 동영상을 지원하지 않습니다.
+        </video>
+      </div>
+    </section>
+
+    <!-- 이동 버튼: 입력 폼으로 -->
+    <div class="actions">
+      <a class="btn" href="{{ url_for('input_page') }}">팀 구성원 정보 입력</a>
+      <!-- 팀 전체 소개로 보내려면 아래 사용 -->
+      <!-- <a class="btn" href="{{ url_for('team_page') }}">팀 전체 소개 보기</a> -->
+    </div>
+
+    <p class="footer">@ 2025 TONGTONGTONG SAHUR. All rights reserved</p>
+  </main>
+</body>
+</html>
