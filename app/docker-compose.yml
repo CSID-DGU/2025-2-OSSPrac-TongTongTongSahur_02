@@ -1,11 +1,30 @@
-version: "3.9"
+version: '3.8'
 
 services:
+  # 1. Flask + uWSGI 애플리케이션 서비스
+  app:
+    build: .  # 현재 디렉토리의 Dockerfile을 빌드
+    container_name: flask_app
+    restart: always
+    command: uwsgi --ini uwsgi.ini # uwsgi.ini 설정으로 서버를 실행
+    expose:
+      - "5000" # Nginx(web) 서비스하고만 5000번 포트로 통신
+
+  # 2. Nginx 웹 서버 (리버스 프록시)
   web:
-    image: nginx:alpine                # 가벼운 Nginx 웹 서버 이미지
-    container_name: subject3_2-web     # 컨테이너 이름 지정
+    image: nginx:latest
+    container_name: nginx_web
+    restart: always
     ports:
-      - "8080:80"                      # 내 PC 8080포트 -> 컨테이너 80포트
+      # 호스트 PC의 8081 포트 -> Nginx 컨테이너의 80 포트로 연결
+      # (http://localhost:8081 으로 접속)
+      - "8081:80"
     volumes:
-      - ./:/usr/share/nginx/html:ro    # 현재 폴더(Subject3_2)를 Nginx 웹 루트에 마운트
-    restart: unless-stopped            # 내가 중지하기 전까지 자동 재시작
+      # 1. Nginx 설정 파일 마운트
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      
+      # 2. static 폴더 전체를 마운트
+      - ./static:/usr/src/app/static
+      
+    depends_on:
+      - app # 'app' 서비스가 실행된 후에 'web' 서비스가 실행됨
