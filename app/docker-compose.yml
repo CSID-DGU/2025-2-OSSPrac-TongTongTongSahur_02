@@ -3,8 +3,8 @@ version: '3.8'
 services:
   # 1. Flask + uWSGI 애플리케이션 서비스
   app:
-    build: .  # 현재 디렉토리의 Dockerfile을 빌드
-    container_name: flask_app
+    container_name: jenkins_app
+    image: zoni606/app-app:latest
     restart: always
     command: uwsgi --ini uwsgi.ini # uwsgi.ini 설정으로 서버를 실행
     expose:
