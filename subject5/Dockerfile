@@ -25,3 +25,5 @@ COPY . .
 
 # 8. uWSGI가 Nginx와 통신하기 위해 5000번 포트를 엶.
 EXPOSE 5000
+
+CMD ["uwsgi", "--ini", "uwsgi.ini"]
