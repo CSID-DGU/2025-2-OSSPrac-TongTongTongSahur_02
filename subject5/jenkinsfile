@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_CREDENTIALS = credentials('dockerhub')
+        DOCKER_USR = "${DOCKER_CREDENTIALS_USR}"
+    }
+
+    stages {
+
+        stage('Prepare') {
+            steps {
+                git url: 'https://github.com/CSID-DGU/2025-2-OSSPrac-TongTongTongSahur_02.git',
+                    branch: 'main'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir('subject5') {
+                    sh 'docker build -t ${DOCKER_USR}/app-app:latest .'
+                }
+            }
+        }
+
+        stage('Tag') {
+            steps {
+                sh "docker tag ${DOCKER_USR}/app-app:latest ${DOCKER_USR}/app-app:${BUILD_NUMBER}"
+            }
+        }
+
+        stage('Push') {
+            steps {
+                sh """
+                echo ${DOCKER_CREDENTIALS_PSW} | docker login -u ${DOCKER_USR} --password-stdin
+                docker push ${DOCKER_USR}/app-app:latest
+                docker push ${DOCKER_USR}/app-app:${BUILD_NUMBER}
+                """
+            }
+        }
+    }
+}
