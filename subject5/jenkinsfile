@@ -15,26 +15,26 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build Image') {
             steps {
                 dir('subject5') {
-                    sh 'docker build -t ${DOCKER_USR}/app-app:latest .'
+                    sh "docker build -t ${DOCKER_USR}/app-app:latest ."
                 }
             }
         }
 
-        stage('Tag') {
+        stage('Tag Image') {
             steps {
                 sh "docker tag ${DOCKER_USR}/app-app:latest ${DOCKER_USR}/app-app:${BUILD_NUMBER}"
             }
         }
 
-        stage('Push') {
+        stage('Push Image') {
             steps {
                 sh """
-                echo ${DOCKER_CREDENTIALS_PSW} | docker login -u ${DOCKER_USR} --password-stdin
-                docker push ${DOCKER_USR}/app-app:latest
-                docker push ${DOCKER_USR}/app-app:${BUILD_NUMBER}
+                    echo ${DOCKER_CREDENTIALS_PSW} | docker login -u ${DOCKER_USR} --password-stdin
+                    docker push ${DOCKER_USR}/app-app:latest
+                    docker push ${DOCKER_USR}/app-app:${BUILD_NUMBER}
                 """
             }
         }
