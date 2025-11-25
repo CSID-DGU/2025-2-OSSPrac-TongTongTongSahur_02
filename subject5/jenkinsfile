@@ -1,9 +1,12 @@
 pipeline {
     agent any
 
+    triggers {
+        pollSCM('H/3 * * * *')
+    }
+
     environment {
-        DOCKER_CREDENTIALS = credentials('dockerhub')
-        DOCKER_USR = "${DOCKER_CREDENTIALS_USR}"
+        DOCKERHUB = credentials('docker-hub')
     }
 
     stages {
@@ -11,30 +14,31 @@ pipeline {
         stage('Prepare') {
             steps {
                 git url: 'https://github.com/CSID-DGU/2025-2-OSSPrac-TongTongTongSahur_02.git',
-                    branch: 'main'
+                    branch: 'main',
+                    credentialsId: 'github'
             }
         }
 
         stage('Build Image') {
             steps {
                 dir('subject5') {
-                    sh "docker build -t ${DOCKER_USR}/app-app:latest ."
+                    sh "docker build -t ${DOCKERHUB_USR}/app-app:latest ."
                 }
             }
         }
 
         stage('Tag Image') {
             steps {
-                sh "docker tag ${DOCKER_USR}/app-app:latest ${DOCKER_USR}/app-app:${BUILD_NUMBER}"
+                sh "docker tag ${DOCKERHUB_USR}/app-app:latest ${DOCKERHUB_USR}/app-app:${BUILD_NUMBER}"
             }
         }
 
         stage('Push Image') {
             steps {
                 sh """
-                    echo ${DOCKER_CREDENTIALS_PSW} | docker login -u ${DOCKER_USR} --password-stdin
-                    docker push ${DOCKER_USR}/app-app:latest
-                    docker push ${DOCKER_USR}/app-app:${BUILD_NUMBER}
+                    echo ${DOCKERHUB_PSW} | docker login -u ${DOCKERHUB_USR} --password-stdin
+                    docker push ${DOCKERHUB_USR}/app-app:latest
+                    docker push ${DOCKERHUB_USR}/app-app:${BUILD_NUMBER}
                 """
             }
         }
