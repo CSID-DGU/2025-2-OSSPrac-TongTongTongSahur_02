@@ -5,6 +5,7 @@ services:
   app:
     container_name: jenkins_app
     image: zoni606/app-app:latest
+ main
     restart: always
     command: uwsgi --ini uwsgi.ini # uwsgi.ini 설정으로 서버를 실행
     expose:
