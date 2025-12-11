@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<!-- 상단바  -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<header class="topbar">
+  <div class="topbar__inner">
+    <nav class="topbar__nav">
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+      <a href="https://github.com/" target="_blank">Github</a>
+    </nav>
+  </div>
+</header>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>팀원 정보 입력</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body{background:#0f0f12;color:#f5f7fb;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans KR",sans-serif;margin:0}
+    .wrap{max-width:900px;margin:0 auto;padding:28px 20px}
+    .wrap > h1,
+    .wrap > p {
+      text-align: center;
+    }
+    .panel{background:#18181c;border:1px solid #2b2b33;border-radius:20px;padding:24px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    label{font-weight:700}
+    input[type=text],input[type=email],textarea{width:100%;background:#101015;color:#f5f7fb;border:1px solid #2a2a31;border-radius:12px;padding:10px}
+    textarea{min-height:80px}
+    .row{display:flex;flex-direction:column;gap:6px}
+    .inline{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+    .btn{background:#7c3aed;border:1px solid #6d28d9;border-radius:12px;padding:12px 16px;font-weight:800;color:#fff;cursor:pointer}
+  
+    .avatars {
+        display: flex;
+        gap: 50px;
+        flex-wrap: wrap; 
+        justify-content: left; 
+    }
+
+    .avatar {
+        display: inline-block; 
+        position: relative; 
+        cursor: pointer;
+    }
+
+    .avatar img {
+        width: 120px; 
+        height: 120px; 
+        border-radius: 50%;
+        object-fit: cover; 
+        
+        background: #18181c; 
+        border: 1px solid #18181c; 
+        display: block;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .avatar input[type=radio] {
+        position: absolute; 
+        opacity: 0; 
+        width: 120px; 
+        height: 100px; 
+        border-radius: 50%; 
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        margin: 0; 
+    }
+
+   
+    .avatar:has(input[type=radio]:checked) img {
+      background: #321069;
+      border-color: #321069; 
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1 style="margin:0 0 10px">나의 프로필 정보 입력</h1>
+    <p style="color:#b7b9c3;margin:0 0 16px">제출하면 결과 페이지로 이동합니다.</p>
+
+    <form method="post" action="{{ url_for('input_page') }}">
+      <div class="panel">
+        <div class="grid">
+          <div class="row">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" placeholder="김민정" required>
+          </div>
+          <div class="row">
+            <label for="student_id">Student ID</label>
+            <input id="student_id" name="student_id" type="text" placeholder="2022110454" required>
+          </div>
+
+          <div class="row">
+            <label for="major">Major</label>
+            <input id="major" name="major" type="text" placeholder="통계학과">
+          </div>
+          <div class="row">
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="text" placeholder="01012345678">
+          </div>
+
+          <div class="row">
+            <label>Gender</label>
+            <div class="inline">
+              <label><input type="radio" name="gender" value="Male"> Male</label>
+              <label><input type="radio" name="gender" value="Female"> Female</label>
+            </div>
+          </div>
+          <div class="row">
+            <label>Role</label>
+            <div class="inline">
+              <label><input type="radio" name="role" value="TeamLeader"> Leader</label>
+              <label><input type="radio" name="role" value="TeamMember" checked> Member</label>
+            </div>
+          </div>
+
+          <div class="row" style="grid-column:1/-1">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="me@dgu.ac.kr">
+          </div>
+
+          <div class="row" style="grid-column:1/-1">
+            <label for="about">About Me</label>
+            <textarea id="about" name="about" placeholder="적극적이고 ~~한 분석가입니다."></textarea>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:14px">
+          <label>Profile Image (미모티콘 선택)</label>
+          <div class="avatars">
+            {% if avatars %}
+              {% for f in avatars %}
+                <label class="avatar">
+                  <img src="{{ url_for('static', filename='avatars/' ~ f) }}" alt="">
+                  <input type="radio" name="avatar_file" value="{{ f }}" {% if loop.first %}checked{% endif %}>
+                </label>
+              {% endfor %}
+            {% else %}
+              <div style="color:#b7b9c3">
+                static/avatars 폴더에 이미지를 넣으면 여기 자동으로 표시돼요.
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+          <a class="btn" href="{{ url_for('index') }}" style="background:#1f1f27;border-color:#32323a">홈</a>
+          <button class="btn" type="submit">제출하기</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

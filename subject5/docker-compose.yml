@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: jenkins_app
+    image: zoni606/app-app:latest
+    restart: always
+    working_dir: /usr/src/app
+    command: uwsgi --ini uwsgi.ini
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/usr/src/app
+
+  web:
+    container_name: nginx_web
+    image: nginx:latest
+    restart: always
+    ports:
+      - "8081:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./static:/usr/src/app/static
+    depends_on:
+      - app
